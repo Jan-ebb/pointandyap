@@ -1,6 +1,6 @@
 import AppKit
 
-/// Two taps of Control alone within 0.4 s, anywhere (global monitors need Accessibility, which Point has).
+/// Two taps of Control alone within 0.4 s, anywhere (global monitors need Accessibility, which the app has).
 @MainActor
 final class DoubleControl {
     private var monitors: [Any] = []

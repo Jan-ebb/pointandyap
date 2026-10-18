@@ -2,7 +2,7 @@ import AppKit
 import ServiceManagement
 import SwiftUI
 
-/// Point's settings, kept in its defaults (com.marcmaurer.point).
+/// The app's settings, kept in its defaults (com.marcmaurer.pointandyap).
 enum Prefs {
     static var sounds: Bool { flag("sounds") }
     static var doubleControl: Bool { flag("doubleControl") }

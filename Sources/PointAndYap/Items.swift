@@ -92,7 +92,7 @@ enum Items {
         if let data = try? JSONEncoder.pretty.encode(s) { try? data.write(to: stateURL(dir), options: .atomic) }
     }
 
-    /// Runs `body` under ~/Point/.lock (flock), so agents in separate processes never take the same item.
+    /// Runs `body` under ~/PointAndYap/.lock (flock), so agents in separate processes never take the same item.
     static func locked<T>(_ body: () -> T) -> T {
         try? FileManager.default.createDirectory(at: Paths.root, withIntermediateDirectories: true)
         let fd = Darwin.open(Paths.root.deletingLastPathComponent().appendingPathComponent(".lock").path, O_CREAT | O_RDWR, 0o600)

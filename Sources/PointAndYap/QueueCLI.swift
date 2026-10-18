@@ -1,6 +1,6 @@
 import Foundation
 
-/// `Point --items` and `Point --done <id>... [--note "..."]`: the queue for an agent that has a shell but not the MCP.
+/// `PointAndYap --items` and `PointAndYap --done <id>... [--note "..."]`: the queue for an agent that has a shell but not the MCP.
 enum QueueCLI {
     static func run(_ args: [String]) {
         if args.contains("--items") {
@@ -18,11 +18,11 @@ enum QueueCLI {
             if !args[i].hasPrefix("--") { ids.append(args[i]) }
             i += 1
         }
-        guard !ids.isEmpty else { print("Usage: Point --done <id>... [--note \"what changed\"]"); exit(2) }
-        let r = Items.set(ids, status: "done", agent: ProcessInfo.processInfo.environment["POINT_AGENT"] ?? "shell", note: note)
+        guard !ids.isEmpty else { print("Usage: PointAndYap --done <id>... [--note \"what changed\"]"); exit(2) }
+        let r = Items.set(ids, status: "done", agent: ProcessInfo.processInfo.environment["POINTANDYAP_AGENT"] ?? "shell", note: note)
         if !r.changed.isEmpty { print("Done: \(r.changed.joined(separator: ", "))") }
         if !r.missing.isEmpty { print("Not changed: \(r.missing.joined(separator: ", "))"); exit(1) }
     }
 
-    static let binary = "/Applications/Point.app/Contents/MacOS/Point"
+    static let binary = AgentInstall.binary
 }

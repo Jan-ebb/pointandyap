@@ -110,7 +110,7 @@ final class AppState: ObservableObject {
         let open = Items.all().filter { $0.status == "open" }.count
         let title = Items.items(in: dir, state: nil).items.first?.title ?? "a recording"
         return "New in Point and Yap: \"\(title)…\"\(open > 1 ? " (\(open) recordings to fix)" : "")\n"
-            + "Fix them all: point MCP get_open_items, then mark_done each when it is fixed. "
+            + "Fix them all: the pointandyap MCP get_open_items, then mark_done each when it is fixed. "
             + "Without the MCP: \(QueueCLI.binary) --items, and --done <id> --note \"what changed\"."
     }
 

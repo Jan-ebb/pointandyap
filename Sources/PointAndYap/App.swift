@@ -6,28 +6,34 @@ struct Main {
     static func main() {
         let args = CommandLine.arguments
         // The queue from a shell, for agents without the MCP:
-        //   Point --items            open and in-progress items
-        //   Point --done <id>... [--note "what changed"]
+        //   PointAndYap --items            open and in-progress items
+        //   PointAndYap --done <id>... [--note "what changed"]
         if args.contains("--items") || args.contains("--done") { QueueCLI.run(args); return }
-        // Local MCP server for coding agents: Point --mcp
+        // Local MCP server for coding agents: PointAndYap --mcp
         if args.contains("--mcp") { MCPServer.run(); return }
-        // Headless: Point --process <session dir>
+        // Headless: PointAndYap --process <session dir>
         if let i = args.firstIndex(of: "--process"), i + 1 < args.count {
             let dir = URL(fileURLWithPath: args[i + 1])
             let done = DispatchSemaphore(value: 0)
             Task.detached {
-                let text = await Process.run(dir: dir) { print("point: \($0)") }
+                let text = await Process.run(dir: dir) { print("pointandyap: \($0)") }
                 print(text)
                 done.signal()
             }
             done.wait()
             return
         }
-        // Offscreen design check: Point --render-ui <dir>
+        // Offscreen design check: PointAndYap --render-ui <dir>
         if let i = args.firstIndex(of: "--render-ui"), i + 1 < args.count {
             MainActor.assumeIsolated { RenderUI.run(to: URL(fileURLWithPath: args[i + 1])) }
             return
         }
+        // Settings of builds before 0.1.1 (bundle id com.marcmaurer.point), carried over once.
+        let d = UserDefaults.standard
+        if !d.bool(forKey: "migratedSettings"), let old = d.persistentDomain(forName: "com.marcmaurer.point") {
+            for (k, v) in old where d.object(forKey: k) == nil { d.set(v, forKey: k) }
+        }
+        d.set(true, forKey: "migratedSettings")
         let app = NSApplication.shared
         let delegate = AppDelegate()
         app.delegate = delegate
@@ -112,7 +118,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             let f = screen.visibleFrame
             pill.setFrameOrigin(NSPoint(x: f.midX - 100, y: f.maxY - 52))
             pill.orderFrontRegardless()
-            // Hand the screen back to the app that was in front before Point.
+            // Hand the screen back to the app that was in front before Point and Yap.
             previousApp?.activate()
         } else {
             // Stay out of the way: the session is in the list and on the clipboard; the Dock icon opens the window.

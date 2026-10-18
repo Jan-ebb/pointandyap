@@ -1,5 +1,5 @@
 ---
-name: point
+name: point-and-yap
 description: The user's queue of things to fix from Point and Yap, where they point at things on screen and talk. Use when the user says "work through Point", "fix what I pointed at", "check Point", refers to something they recorded or showed, or pastes a "New in Point and Yap" line.
 ---
 
@@ -11,7 +11,7 @@ parent elements) and cropped screenshots (red ring = cursor, yellow box = the el
 
 ## Work through the queue
 
-1. `get_open_items` (point MCP) marks the open items in progress by you, oldest first, and returns them; no other agent
+1. `get_open_items` (pointandyap MCP) marks the open items in progress by you, oldest first, and returns them; no other agent
    gets them. To pick specific ones instead: `get_open_items` with `take: false`, then `start_items` with their ids.
    `list_items` shows what is open, in progress (by which agent) and done.
 2. For each item: look at its crops, find the code behind the element (grep its visible text first, then the identifier,

@@ -1,13 +1,13 @@
 import XCTest
-@testable import Point
+@testable import PointAndYap
 
 /// A synthetic recording ("This button should be blue, not gray, and here, the date is wrong. It should say today.",
 /// a rest on a Save button, a short pass over a group, a rest on a date label), in a temporary sessions folder.
-final class PointTests: XCTestCase {
+final class PointAndYapTests: XCTestCase {
     static let root: URL = {
-        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("point-tests-\(UUID().uuidString)/sessions")
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("pointandyap-tests-\(UUID().uuidString)/sessions")
         try! FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        setenv("POINT_SESSIONS", dir.path, 1)   // read once by Paths.root
+        setenv("POINTANDYAP_SESSIONS", dir.path, 1)   // read once by Paths.root
         return dir
     }()
 
@@ -30,7 +30,7 @@ final class PointTests: XCTestCase {
         // Never run against a real sessions folder: every test stops here unless Paths.root is the temporary one.
         guard Paths.root.standardizedFileURL.path == Self.root.standardizedFileURL.path,
               Paths.root.path.hasPrefix(FileManager.default.temporaryDirectory.path) else {
-            fatalError("PointTests: Paths.root is \(Paths.root.path), not the temporary folder; refusing to touch it")
+            fatalError("PointAndYapTests: Paths.root is \(Paths.root.path), not the temporary folder; refusing to touch it")
         }
         for d in (try? FileManager.default.contentsOfDirectory(at: Self.root, includingPropertiesForKeys: nil)) ?? [] {
             try? FileManager.default.removeItem(at: d)
@@ -110,5 +110,33 @@ final class PointTests: XCTestCase {
         XCTAssertTrue(text.contains("mark_done"))
         let done = MCPServer.call("mark_done", ["ids": ["2026-10-17_120007#1"], "note": "ok"])
         XCTAssertNil(done["isError"])
+    }
+
+    func testOnlyOurOldAgentEntriesAreReplaced() {
+        XCTAssertTrue(AgentInstall.isOurOld(["command": "/Applications/Point.app/Contents/MacOS/Point", "args": ["--mcp"]]))
+        XCTAssertFalse(AgentInstall.isOurOld(["command": "/usr/local/bin/point"]), "someone else's point server")
+        XCTAssertFalse(AgentInstall.isOurOld(nil))
+    }
+
+    func testTheOldCodexTableGoesAndOthersStay() {
+        let toml = """
+        [mcp_servers.other]
+        command = "x"
+
+        [mcp_servers.point]
+        command = "/Applications/Point.app/Contents/MacOS/Point"
+        args = ["--mcp"]
+
+        [mcp_servers.point.env]
+        A = "1"
+
+        [profile]
+        name = "y"
+        """
+        let out = AgentInstall.removingTable("mcp_servers.point", from: toml) { $0.contains(AgentInstall.oldApp) }
+        XCTAssertFalse(out.contains("mcp_servers.point"))
+        XCTAssertTrue(out.contains("[mcp_servers.other]") && out.contains("[profile]"))
+        let foreign = toml.replacingOccurrences(of: "/Applications/Point.app/Contents/MacOS/Point", with: "/opt/point")
+        XCTAssertEqual(AgentInstall.removingTable("mcp_servers.point", from: foreign) { $0.contains(AgentInstall.oldApp) }, foreign)
     }
 }

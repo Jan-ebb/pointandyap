@@ -24,7 +24,7 @@ final class Recorder {
     private static let restRadius = 8.0
     private static let restTime = 0.35
 
-    /// Point's own UI (the pill), in global top-left points: nothing there is a point.
+    /// The app's own UI (the pill), in global top-left points: nothing there is a point.
     var ignore: (() -> CGRect?)?
 
     init() { dir = Paths.newSession() }

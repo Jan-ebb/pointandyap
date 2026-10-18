@@ -28,7 +28,7 @@ enum Screen {
             guard write(image, to: url) else { return nil }
             return (CGDisplayBounds(display.displayID), scale)
         } catch {
-            NSLog("point: screenshot failed: \(error.localizedDescription)")
+            NSLog("pointandyap: screenshot failed: \(error.localizedDescription)")
             return nil
         }
     }

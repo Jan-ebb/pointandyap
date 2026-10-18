@@ -1,7 +1,7 @@
 import AppKit
 import Foundation
 
-/// `Point --mcp`: a local MCP server over stdio (newline-delimited JSON-RPC), no auth. It only reads ~/Point/sessions.
+/// `PointAndYap --mcp`: a local MCP server over stdio (newline-delimited JSON-RPC), no auth. It only reads ~/PointAndYap/sessions.
 enum MCPServer {
     static let protocolVersion = "2025-06-18"
     static let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev"
@@ -23,7 +23,7 @@ enum MCPServer {
                 let asked = params["protocolVersion"] as? String
                 reply(id, ["protocolVersion": asked ?? protocolVersion,
                            "capabilities": ["tools": [:]],
-                           "serverInfo": ["name": "point", "title": "Point and Yap", "version": version],
+                           "serverInfo": ["name": "pointandyap", "title": "Point and Yap", "version": version],
                            "instructions": instructions])
             case "ping": reply(id, [:])
             case "tools/list": reply(id, ["tools": tools])

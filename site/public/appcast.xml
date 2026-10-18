@@ -4,13 +4,13 @@
     <title>Point and Yap</title>
     <link>https://pointandyap.com</link>
     <item>
-      <title>Point and Yap 0.1.2</title>
-      <pubDate>Sun, 18 Oct 2026 02:03:31 +0000</pubDate>
-      <sparkle:version>1792288926</sparkle:version>
-      <sparkle:shortVersionString>0.1.2</sparkle:shortVersionString>
+      <title>Point and Yap 0.1.3</title>
+      <pubDate>Sun, 18 Oct 2026 03:24:16 +0000</pubDate>
+      <sparkle:version>1792293737</sparkle:version>
+      <sparkle:shortVersionString>0.1.3</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/mfmaur/pointandyap/releases/tag/v0.1.2</sparkle:releaseNotesLink>
-      <enclosure url="https://github.com/mfmaur/pointandyap/releases/download/v0.1.2/PointAndYap.dmg" sparkle:edSignature="aM4zQ8FR58J24WbSfxiCZD97e+HgOO0dc3tE+F0zksPVa9KqW3qqBHeUrENwukmkcgLXLQry8cZbaiNe/7eHAA==" length="3795535" type="application/octet-stream"/>
+      <sparkle:releaseNotesLink>https://github.com/mfmaur/pointandyap/releases/tag/v0.1.3</sparkle:releaseNotesLink>
+      <enclosure url="https://github.com/mfmaur/pointandyap/releases/download/v0.1.3/PointAndYap.dmg" sparkle:edSignature="1HA+rEd9RiVDArfYRFGMUrMlWUFfwIi9lCIPoWVgSDVRZjaychUgYkonrF42+mEyeyybUMpT379+iX5FZDoLCQ==" length="3915899" type="application/octet-stream"/>
     </item>
   </channel>
 </rss>
